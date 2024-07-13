@@ -7,14 +7,33 @@ const Button = ({handleFeedback, text}) => {
 }
 
 const Statistics = ({sum}) => {
+  const all = sum.good + sum.bad + sum.neutral
+  const average = (sum.good - sum.bad) / all
+  const positive = sum.good / all * 100
+  if(all === 0){
+    return (
+      <div>
+      <p>good: {sum.good}</p>
+      <p>neutral: {sum.neutral}</p>
+      <p>bad: {sum.bad}</p>
+      <p>all: {all}</p>
+      <p>average: 0</p>
+      <p>positive: 0%</p>
+    </div>      
+    )
+  }
   return (
     <div>
       <p>good: {sum.good}</p>
       <p>neutral: {sum.neutral}</p>
       <p>bad: {sum.bad}</p>
+      <p>all: {all}</p>
+      <p>average: {average}</p>
+      <p>positive: {positive}%</p>
     </div>
   )
 }
+
 function App() {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
