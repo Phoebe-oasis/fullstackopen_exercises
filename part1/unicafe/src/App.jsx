@@ -9,11 +9,17 @@ const Button = ({handleFeedback, text}) => {
 const StatisticLine = (props) => {
   if(props.text === 'positive'){
     return(
-      <p>{props.text}: {props.value} %</p>
+      <tr>
+        <th>{props.text}: </th>
+        <td>{props.value} %</td>
+      </tr>
     )
   }
   return(
-    <p>{props.text}: {props.value}</p>
+    <tr>
+      <th>{props.text}:</th>
+      <td>{props.value}</td>
+    </tr>
   )
 }
 
@@ -27,14 +33,16 @@ const Statistics = ({sum}) => {
     )
   }
   return (
-    <div>
-      <StatisticLine text="good" value={sum.good}/>
-      <StatisticLine text="neutral" value={sum.neutral}/>
-      <StatisticLine text="bad" value={sum.bad}/>
-      <StatisticLine text="all" value={all}/>
-      <StatisticLine text="average" value={average}/>
-      <StatisticLine text="positive" value={positive}/>
-    </div>
+    <table border="1px solid black" >
+      <tbody >
+        <StatisticLine text="good" value={sum.good}/>
+        <StatisticLine text="neutral" value={sum.neutral}/>
+        <StatisticLine text="bad" value={sum.bad}/>
+        <StatisticLine text="all" value={all}/>
+        <StatisticLine text="average" value={average}/>
+        <StatisticLine text="positive" value={positive}/>
+      </tbody>
+    </table>
   )
 }
 
