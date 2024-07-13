@@ -6,6 +6,17 @@ const Button = ({handleFeedback, text}) => {
   )
 }
 
+const StatisticLine = (props) => {
+  if(props.text === 'positive'){
+    return(
+      <p>{props.text}: {props.value} %</p>
+    )
+  }
+  return(
+    <p>{props.text}: {props.value}</p>
+  )
+}
+
 const Statistics = ({sum}) => {
   const all = sum.good + sum.bad + sum.neutral
   const average = (sum.good - sum.bad) / all
@@ -17,12 +28,12 @@ const Statistics = ({sum}) => {
   }
   return (
     <div>
-      <p>good: {sum.good}</p>
-      <p>neutral: {sum.neutral}</p>
-      <p>bad: {sum.bad}</p>
-      <p>all: {all}</p>
-      <p>average: {average}</p>
-      <p>positive: {positive}%</p>
+      <StatisticLine text="good" value={sum.good}/>
+      <StatisticLine text="neutral" value={sum.neutral}/>
+      <StatisticLine text="bad" value={sum.bad}/>
+      <StatisticLine text="all" value={all}/>
+      <StatisticLine text="average" value={average}/>
+      <StatisticLine text="positive" value={positive}/>
     </div>
   )
 }
