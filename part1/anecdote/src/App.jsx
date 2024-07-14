@@ -19,14 +19,30 @@ import { useState } from 'react'
     ]
      
     const [selected, setSelected] = useState(0)
+    const [points, setPoints] = useState(Array(8).fill(0))
+    console.log(points)
+
+
     const select = () => {
-      setSelected( Math.floor(Math.random() * 8 ))
+      let random = Math.floor(Math.random() * 8 )
+      setSelected(random)
+      console.log(random)
+    }
+    const increasePoints = () => {
+      const copy = [...points]
+      copy[selected] += 1
+      setPoints(copy)
+      console.log(points)
     }
 
     return (
       <div>
         {anecdotes[selected]}
-        <div><Button text='next anecdote' handleSelect={select} /></div>
+        <p>has {points[selected]} votes</p>
+        <div>
+          <Button text='vote' handleSelect={increasePoints}/>
+          <Button text='next anecdote' handleSelect={select} />
+        </div>
       </div>
     )
 
