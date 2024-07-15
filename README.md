@@ -2,8 +2,8 @@
 Taking the course: https://fullstackopen.com/en/
 ##  Exercises Process
 - [x] part 0
-- [ ] part 1
-- [ ] part 2
+- [x] part 1
+- [x] part 2
 - [ ] part 3
 - [ ] part 4
 - [ ] part 5
