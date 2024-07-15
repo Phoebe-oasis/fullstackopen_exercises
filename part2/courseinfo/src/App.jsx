@@ -19,7 +19,7 @@ const Content = ({parts}) => {
 }
 const Header = ({courseName}) => {
   return (
-    <h1>{courseName}</h1> 
+    <h2>{courseName}</h2> 
   )
 }
 
@@ -35,29 +35,51 @@ const Course = ({course}) => {
 }
 
 const App = () => {
-  const course = {
-    id: 1,
-    name: 'Half Stack application development',
+  const courses = [
+    {
+      id: 1,
+      name: 'Half Stack application development',
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        }
+      ]
+  },
+  {
+    id: 2,
+    name: 'Node.js',
     parts: [
       {
-        name: 'Fundamentals of React',
-        exercises: 10,
+        name: 'Routing',
+        exercises: 3,
         id: 1
       },
       {
-        name: 'Using props to pass data',
+        name: 'Middlewares',
         exercises: 7,
         id: 2
-      },
-      {
-        name: 'State of a component',
-        exercises: 14,
-        id: 3
       }
     ]
-  }
+  }]
 
-  return <Course course={course} />
-}
+  return (
+    <>
+      <h1>Web development curriculum</h1>
+      {courses.map(course => 
+        <Course key={course.id} course={course} />)}
+    </>
+)}
 
 export default App
