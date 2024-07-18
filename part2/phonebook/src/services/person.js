@@ -7,7 +7,7 @@ const getAll = () =>
     .get(baseURL)
     .then(response => response.data)
 
-const update = newObject => 
+const create = newObject => 
   axios
     .post(baseURL, newObject)
     .then(response => response.data)
@@ -17,4 +17,8 @@ const deleteOne = id =>
     .delete(`${baseURL}/${id}`)
     .then(response => response.data)
 
-export default {getAll, update, deleteOne}
+const update = (id, newObject) => 
+  axios
+    .put(`${baseURL}/${id}`, newObject)
+    .then(response => response.data)
+export default {getAll, create, deleteOne, update}

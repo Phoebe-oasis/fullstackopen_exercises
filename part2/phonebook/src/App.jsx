@@ -1,62 +1,8 @@
 import { useState, useEffect } from 'react'
 import personService from './services/person'
-
-const Person = ({person, deletePerson}) => {
-  return <p>{person.name} {person.number} <button onClick={deletePerson}>delete</button></p>
-}
-
-const Persons = ({persons, filterName, filteredPerson, deletePerson}) => {
-  if(filterName){
-    return(
-      <div>
-        {filteredPerson.map(person => 
-          <Person person={person} key={person.id} deletePerson={()=>deletePerson(person.id)}/>
-        )}
-      </div>
-      )
-  }else{
-    return(
-      <div>
-        {persons.map(person => 
-          <Person person={person} key={person.id} deletePerson={() => deletePerson(person.id)}/>
-        )}
-      </div>
-      )
-  }
-
-}
-
-const PersonForm = ({addPerson, newName, newNumber, handleNameChange, handleNumberChange}) => {
-  
-  return (
-    <form onSubmit={addPerson}>
-        <div>
-          name: <input 
-          value={newName}
-          onChange={handleNameChange}/>
-        </div>
-        <div>
-          number: <input 
-          value={newNumber}
-          onChange={handleNumberChange}/>
-        </div>
-        <div>
-          <button type='submit'>add</button>
-        </div>
-      </form>
-  )
-}
-
-const Filter = ({filterName, handleFilterNameChange}) => {
-  return (
-    <div>
-      filter shown with name: <input 
-        value={filterName}
-        onChange={handleFilterNameChange}
-        />
-    </div>
-  )
-}
+import PersonForm from './components/PersonForm'
+import Filter from './components/Filter'
+import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -102,6 +48,7 @@ const App = () => {
   const handleNameChange = (e) => {
     setNewName(e.target.value)
   }
+  
   const handleNumberChange = (e) => {
     setNewNumber(e.target.value)
   }
@@ -112,16 +59,25 @@ const App = () => {
 
     persons.map(person => {
       if(person.name === newName){
-        alert(`${newName} is already added to phone book`)
-        setNewName('')
+
+        window.confirm(`${newName} is already added to phone book, replace the old number with a new one?`)
+        personService
+          .update(person.id, {name: newName, number: newNumber})
+          .then(personData => {
+            setPersons(persons.map(person => person.name === newName ? personData : person))
+            setNewNumber('')
+            setNewName('')
+          })
+
         flag = 1
       }
     })
 
     if(flag === 0){
       const newPerson = {name: newName, number: newNumber}
+
       personService
-        .update(newPerson)
+        .create(newPerson)
         .then(personData => {
           setPersons(persons.concat(personData))
           setNewName('')
