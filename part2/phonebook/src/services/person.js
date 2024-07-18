@@ -12,4 +12,9 @@ const update = newObject =>
     .post(baseURL, newObject)
     .then(response => response.data)
 
-export default {getAll, update}
+const deleteOne = id => 
+  axios
+    .delete(`${baseURL}/${id}`)
+    .then(response => response.data)
+
+export default {getAll, update, deleteOne}

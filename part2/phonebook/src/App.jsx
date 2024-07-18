@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react'
 import personService from './services/person'
 
-const Person = ({person}) => {
-  return <p>{person.name} {person.number}</p>
+const Person = ({person, deletePerson}) => {
+  return <p>{person.name} {person.number} <button onClick={deletePerson}>delete</button></p>
 }
 
-const Persons = ({persons, filterName, filteredPerson}) => {
+const Persons = ({persons, filterName, filteredPerson, deletePerson}) => {
   if(filterName){
     return(
       <div>
         {filteredPerson.map(person => 
-          <Person person={person} key={person.id}/>
+          <Person person={person} key={person.id} deletePerson={()=>deletePerson(person.id)}/>
         )}
       </div>
       )
@@ -18,7 +18,7 @@ const Persons = ({persons, filterName, filteredPerson}) => {
     return(
       <div>
         {persons.map(person => 
-          <Person person={person} key={person.id}/>
+          <Person person={person} key={person.id} deletePerson={() => deletePerson(person.id)}/>
         )}
       </div>
       )
@@ -73,6 +73,19 @@ const App = () => {
       })
   },[])
 
+  const deletePerson = (id) => {
+    const [person] = persons.filter(person => person.id === id)
+    const answer = window.confirm(`Delete ${person.name} ?`)
+    if(answer){
+      personService
+        .deleteOne(id)
+        .then(responseData => {
+          setPersons(persons.filter(person => person.id !== responseData.id))
+          setFilteredPerson(filteredPerson.filter(person => person.id !== responseData.id))
+        })
+    }
+  }
+
   const handleFilterNameChange = (e) => {
 
     setFilterName(e.target.value)
@@ -106,7 +119,7 @@ const App = () => {
     })
 
     if(flag === 0){
-      const newPerson = {name: newName, number: newNumber, id: persons.length + 1}
+      const newPerson = {name: newName, number: newNumber}
       personService
         .update(newPerson)
         .then(personData => {
@@ -124,7 +137,7 @@ const App = () => {
       <h2>Add a new person</h2>
       <PersonForm newName={newName} newNumber={newNumber} addPerson={(e) => addPerson(e)} handleNameChange={(e) => handleNameChange(e)} handleNumberChange={(e) => handleNumberChange(e)}/>
       <h2>Numbers</h2>
-      <Persons persons={persons} filterName={filterName} filteredPerson={filteredPerson}/>
+      <Persons persons={persons} filterName={filterName} filteredPerson={filteredPerson} deletePerson={(id) => deletePerson(id)}/>
     </div>
   )
 }
